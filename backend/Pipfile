@@ -1,10 +1,5 @@
-[[sou[packages]
-flask = "*"
-flask-sqlalchemy = "*"
-flask-migrate = "*"
-flask-jwt-extended = "*"
-psycopg = {extras = ["binary", "pool"], version = "*"}
-python-dotenv = "*"url = "https://pypi.org/simple"
+[[source]]
+url = "https://pypi.org/simple"
 verify_ssl = true
 name = "pypi"
 
@@ -12,8 +7,11 @@ name = "pypi"
 flask = "*"
 flask-sqlalchemy = "*"
 flask-migrate = "*"
+flask-jwt-extended = "*"
+flask-cors = "*"
 psycopg = {extras = ["binary", "pool"], version = "*"}
 python-dotenv = "*"
+flask-bcrypt = "*"
 
 [dev-packages]
 
