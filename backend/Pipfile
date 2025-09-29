@@ -1,0 +1,21 @@
+[[sou[packages]
+flask = "*"
+flask-sqlalchemy = "*"
+flask-migrate = "*"
+flask-jwt-extended = "*"
+psycopg = {extras = ["binary", "pool"], version = "*"}
+python-dotenv = "*"url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+flask = "*"
+flask-sqlalchemy = "*"
+flask-migrate = "*"
+psycopg = {extras = ["binary", "pool"], version = "*"}
+python-dotenv = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.12"
