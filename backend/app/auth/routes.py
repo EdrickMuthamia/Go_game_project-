@@ -63,7 +63,7 @@ def login():
         'message': 'Login successful',
         'access_token': access_token,
         'user': user.to_dict()
-    }), 200
+    }), 201
 
 
 @bp.route('/profile', methods=['GET'])

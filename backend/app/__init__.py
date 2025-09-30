@@ -16,6 +16,9 @@ bcrypt = Bcrypt()
 def create_app():
     app = Flask(__name__)
     app.config.from_object(Config)
+    
+    # Initialize app-specific configurations
+    Config.init_app(app)
 
     # Initialize extensions with app
     db.init_app(app)
