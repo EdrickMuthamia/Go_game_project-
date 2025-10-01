@@ -1,4 +1,3 @@
-
 from flask import request, jsonify
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 from app.auth import bp
@@ -12,15 +11,25 @@ def register():
     data = request.get_json() or {}
 
     # Validate required fields
-    required_fields = ['username', 'email', 'password']
+    required_fields = [
+        'username',
+        'email',
+        'password'
+    ]
     if not all(field in data for field in required_fields):
-        return jsonify({'message': 'Username, email, and password are required'}), 400
+        return jsonify({
+            'message': 'Username, email, and password are required'
+        }), 400
 
     # Check if user already exists
     if User.query.filter_by(username=data['username']).first():
-        return jsonify({'message': 'Username already exists'}), 400
+        return jsonify({
+            'message': 'Username already exists'
+        }), 400
     if User.query.filter_by(email=data['email']).first():
-        return jsonify({'message': 'Email already exists'}), 400
+        return jsonify({
+            'message': 'Email already exists'
+        }), 400
 
     # Create new user
     user = User(username=data['username'], email=data['email'], password=data['password'])
@@ -51,7 +60,9 @@ def login():
     # Find user and validate password
     user = User.query.filter_by(username=data['username']).first()
     if not user or not user.check_password(data['password']):
-        return jsonify({'message': 'Invalid username or password'}), 401
+        return jsonify({
+            'message': 'Invalid username or password'
+    }), 401
 
     # Create access token with user ID as integer
     access_token = create_access_token(
@@ -74,6 +85,10 @@ def profile():
     user = User.query.get(int(current_user_id))
 
     if not user:
-        return jsonify({'message': 'User not found'}), 404
+        return jsonify({
+            'message': 'User not found'
+        }), 404
 
-    return jsonify({'user': user.to_dict()}), 200
+    return jsonify({
+        'user': user.to_dict()
+    }), 201
