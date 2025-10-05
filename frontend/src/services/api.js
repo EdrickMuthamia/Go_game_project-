@@ -1,44 +1,78 @@
-import axios from 'axios';
+import React, { useState, useEffect } from 'react';
+import './App.css';
+import Login from './components/Login';
+import GameBoard from './components/GameBoard';
+import GameList from './components/GameList';
 
-const API_BASE = 'http://localhost:5000/api';
+function App() {
+  const [token, setToken] = useState(localStorage.getItem('token'));
+  const [user, setUser] = useState(null);
+  const [currentGame, setCurrentGame] = useState(null);
+  const [view, setView] = useState('games'); // 'games' or 'game'
 
-const api = axios.create({
-  baseURL: API_BASE,
-});
+  useEffect(() => {
+    if (token) {
+      const userData = localStorage.getItem('user');
+      if (userData) {
+        setUser(JSON.parse(userData));
+      }
+    }
+  }, [token]);
 
-// Auth endpoints
-export const authAPI = {
-  login: (credentials) => api.post('/auth/login', credentials),
-  register: (userData) => api.post('/auth/register', userData),
-  getProfile: (token) => api.get('/auth/profile', {
-    headers: { Authorization: `Bearer ${token}` }
-  })
-};
+  const handleLogin = (token, user) => {
+    setToken(token);
+    setUser(user);
+    localStorage.setItem('token', token);
+    localStorage.setItem('user', JSON.stringify(user));
+  };
 
-// Game endpoints
-export const gameAPI = {
-  getGames: (token) => api.get('/game/', {
-    headers: { Authorization: `Bearer ${token}` }
-  }),
-  
-  createGame: (token, boardSize = 9) => api.post('/game/new', 
-    { board_size: boardSize }, 
-    { headers: { Authorization: `Bearer ${token}` } }
-  ),
-  
-  getGame: (token, gameId) => api.get(`/game/${gameId}`, {
-    headers: { Authorization: `Bearer ${token}` }
-  }),
-  
-  makeMove: (token, gameId, row, col) => api.post(`/game/${gameId}/move`, 
-    { row, col }, 
-    { headers: { Authorization: `Bearer ${token}` } }
-  ),
-  
-  passMove: (token, gameId) => api.post(`/game/${gameId}/pass`, 
-    {}, 
-    { headers: { Authorization: `Bearer ${token}` } }
-  )
-};
+  const handleLogout = () => {
+    setToken(null);
+    setUser(null);
+    setCurrentGame(null);
+    setView('games');
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+  };
 
-export default api;
+  const handleGameSelect = (game) => {
+    setCurrentGame(game);
+    setView('game');
+  };
+
+  const handleBackToGames = () => {
+    setCurrentGame(null);
+    setView('games');
+  };
+
+  if (!token) {
+    return <Login onLogin={handleLogin} />;
+  }
+
+  return (
+    <div className="App">
+      <header className="app-header">
+        <h1>Go Game</h1>
+        <div className="user-info">
+          <span>Welcome, {user?.username}</span>
+          <button onClick={handleLogout} className="logout-btn">Logout</button>
+        </div>
+      </header>
+      
+      {view === 'games' ? (
+        <GameList 
+          token={token} 
+          onGameSelect={handleGameSelect}
+        />
+      ) : (
+        <GameBoard 
+          token={token}
+          game={currentGame}
+          onBack={handleBackToGames}
+        />
+      )}
+    </div>
+  );
+}
+
+export default App;
