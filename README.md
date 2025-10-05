@@ -96,6 +96,15 @@ flask db migrate -m "description"
 flask db upgrade
 ```
 
+## Contributors
+
+- Bettson Kiptoo
+- Jane Kimei
+- Feysal Abdii
+- Edrick Muthamia 
+
 ## License
 
 MIT License
+
+ 
