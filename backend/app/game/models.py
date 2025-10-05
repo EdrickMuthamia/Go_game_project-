@@ -4,6 +4,8 @@ import json
 
 
 class Game(db.Model):
+    __tablename__ = 'game'
+
     id = db.Column(db.Integer, primary_key=True)
     player_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     board_state = db.Column(db.Text, nullable=False)
