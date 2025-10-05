@@ -31,12 +31,12 @@ def create_app():
     from app.auth import bp as auth_bp
     app.register_blueprint(auth_bp, url_prefix='/api/auth')
 
-    # from app.game import bp as game_bp
-    # app.register_blueprint(game_bp, url_prefix='/api/game')
+    from app.game import bp as game_bp
+    app.register_blueprint(game_bp, url_prefix='/api/game')
 
     # Import models to ensure they are registered with SQLAlchemy
     from app.auth.models import User
-    # from app.game.models import Game
+    from app.game.models import Game
 
     # JWT error handlers
     @jwt.invalid_token_loader
